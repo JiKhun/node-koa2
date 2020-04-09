@@ -43,4 +43,8 @@ app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
 
+app.listen(1234, () => {
+  console.log('koa app listen on 1234');
+});
+
 module.exports = app
