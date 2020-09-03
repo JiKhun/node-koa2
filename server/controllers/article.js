@@ -74,14 +74,15 @@ class articleController {
     }
 
     /**
-     * 获取文章详情
+     * 获取文章列表
      * @param ctx
      * @returns {Promise.<void>}
      */
     static async list(ctx){
+        let { author,pageNum,pageSize } = ctx.request.body;
         try{
             // 查询文章详情模型
-            let data = await ArticleModel.getArticleList();
+            let data = await ArticleModel.getArticleList({author,pageNum,pageSize});
             ctx.response.status = 200;
             ctx.body = {
                 code: 200,
@@ -92,8 +93,8 @@ class articleController {
             ctx.response.status = 412;
             ctx.body = {
                 code: 412,
-                msg: '查询失败',
-                data
+                msg: err,
+                data:[]
             }
         }
     }

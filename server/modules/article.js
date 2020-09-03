@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 // 引入mysql的配置文件
 const db = require('../../config/db');
 
@@ -40,11 +41,15 @@ class ArticleModel {
      * 查询文章列表
      * @returns {Promise<List>}
      */
-    static async getArticleList(){
+    static async getArticleList({author,pageNum,pageSize}){
+        let offset = (pageNum - 1) * pageSize;
         return await Article.findAndCountAll({
             // attributes: ['id', ['title','title2']],SELECT id, title AS title2 ...
-            offset: 0,
-            limit: 10
+            where: {
+                author: {[Op.iLike]: `%${author}%`}
+            },
+            offset,
+            limit: parseInt(pageSize)
         });
     }
 
